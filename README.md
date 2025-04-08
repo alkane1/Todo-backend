@@ -75,3 +75,74 @@ Nest is an MIT-licensed open source project. It can grow thanks to the sponsors 
 
 Nest is [MIT licensed](LICENSE).
 >>>>>>> ea5fae7 (Initial commit)
+
+# 📝 README.md
+
+## 🎯 Objectif du projet
+
+Dans ce projet, j’ai dû mettre en place une application de gestion de tâches (Todo List) avec un backend en NestJS et un frontend React. L'objectif principal était de permettre la création, l'édition, la suppression et la recherche de tâches.
+
+---
+
+## 🧠 Mes choix techniques et organisation du code
+
+### 1. Architecture
+
+J’ai choisi de structurer le backend en plusieurs couches :
+- **Controller** : pour gérer les routes.
+- **UseCase** : pour séparer la logique métier.
+- **Repository** : pour interagir avec la base de données via Prisma.
+
+Cette séparation permet une meilleure lisibilité, une maintenance facilitée, et une bonne testabilité du code.
+
+### 2. UseCaseFactory
+
+J’ai utilisé une `UseCaseFactory` pour instancier dynamiquement les use cases. Cela évite d’avoir à injecter manuellement chaque service dans les contrôleurs et respecte le principe d'inversion des dépendances.
+
+---
+
+## ⚙️ Fonctionnalités implémentées
+
+- Récupération de toutes les tâches (`GET /tasks`)
+- Création d’une tâche (`POST /tasks`)
+- Mise à jour d’une tâche (`PATCH /tasks/:id`)
+- Suppression d’une tâche (`DELETE /tasks/:id`)
+- Recherche côté frontend avec filtre dynamique
+- Désactivation du bouton de mise à jour si le nom de la tâche n’a pas changé
+
+---
+
+## ⚠️ Points d’arrêt / Problèmes rencontrés
+
+### 🛑 Erreur TypeScript dans UseCaseFactory
+J’ai rencontré une erreur lors de l’appel de la méthode `create()` :
+```ts
+Argument of type 'typeof SaveTaskUseCase' is not assignable to parameter of type 'Type<UseCases>'.
+```
+J’ai corrigé cela en m’assurant que tous les use cases partagent bien la même structure typée, notamment au niveau des constructeurs et des dépendances attendues.
+
+### 🔁 Méthode save dans le repository
+
+Dans `TaskRepository`, j’ai dû adapter la méthode `save()` pour qu’elle différencie la création (`create`) de la mise à jour (`update`) en fonction de la présence ou non de `data.id`.
+
+### 🧪 Validation dans SaveTaskUseCase
+
+J’ai ajouté une vérification dans le `SaveTaskUseCase` pour m’assurer que le champ `name` est bien présent. Sinon, une `BadRequestException` est levée.
+
+### 🖱️ Frontend – Bouton de sauvegarde
+
+Pour répondre à la consigne "*une tâche ne peut être mise à jour si le nom n’a pas changé*", j’ai ajouté une condition dans le frontend pour désactiver le bouton de sauvegarde dans ce cas-là.
+
+---
+
+## 💻 Stack technique utilisée
+
+- **Backend** : NestJS, Prisma, SQLite
+- **Frontend** : React, Vite, Material UI
+- **Langage** : TypeScript
+
+---
+
+## ✅ Résultat final
+
+L’application permet de gérer une liste de tâches de façon fluide avec toutes les fonctionnalités attendues. L’architecture mise en place est claire, modulaire et facilement maintenable.

@@ -24,9 +24,27 @@ export default class TaskRepository {
       | Prisma.XOR<Prisma.TaskUpdateInput, Prisma.TaskUncheckedUpdateInput>,
   ) {
     if (!data.id) {
-      // @todo IMPLEMENT HERE USING PRISMA API
+      return this.prisma.task.create({
+        data: data as Prisma.TaskCreateInput,
+      });
     }
-
     // @todo IMPLEMENT HERE USING PRISMA API
+    return this.prisma.task.update({
+      where: {
+        id: data.id as number,
+      },
+      data: data as Prisma.TaskUpdateInput,
+    });
   }
+
+  async search(query: string) {
+    return this.prisma.task.findMany({
+      where: {
+        name: {
+          contains: query
+        },
+      },
+    });
+  
+}
 }
